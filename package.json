@@ -2,13 +2,18 @@
   "name": "api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "api/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "server": "nodemon index.js --prefix api"
   },
   "author": "Kolchin Volodymyr",
   "license": "ISC",
   "dependencies": {
-    "@hapi/hapi": "^20.1.0"
+    "@hapi/hapi": "^20.1.0",
+    "find": "^0.3.0",
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
   }
 }

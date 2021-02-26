@@ -9,14 +9,10 @@ const init = async () => {
         host: 'localhost'
     });
 
-    server.route({
-        method: 'GET',
-        path: '/',
-        handler: (request, h) => {
 
-            return 'Hello World!';
-        }
-    });
+    // load all routes:
+    const routeModules = require('./routesFetcher');
+    server.route(routeModules);
 
     await server.start();
     console.log('Server running on %s', server.info.uri);
