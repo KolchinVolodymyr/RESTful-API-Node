@@ -9,9 +9,13 @@
   "author": "Kolchin Volodymyr",
   "license": "ISC",
   "dependencies": {
+    "@hapi/cookie": "^11.0.2",
     "@hapi/hapi": "^20.1.0",
+    "bcryptjs": "^2.4.3",
     "find": "^0.3.0",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "mysql2": "^2.2.5",
+    "sequelize": "^6.5.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.6"

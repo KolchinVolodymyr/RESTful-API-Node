@@ -1,6 +1,8 @@
 'use strict';
 
+
 module.exports = [
+
     {
         method: 'GET',
         path: `/2`,
@@ -8,13 +10,16 @@ module.exports = [
 
             return 'Hello World!222';
         }
-    },{
+    },
+    {
         method: 'GET',
         path: '/',
         handler: (request, h) => {
 
             return 'Hello World!';
         }
-    }
+    },
+
+
 
 ];
