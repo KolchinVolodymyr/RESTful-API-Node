@@ -87,30 +87,6 @@ module.exports = [
             }
         }
     },
-    {   //6. Update item
-        method: 'PUT',
-        path: `/api/items/{id}`,
-        handler: async (request, h) => {
-            const product = await Product.update(
-                {title: request.payload.title,
-                    price: request.payload.price},
-                {where: {id: request.params.id}}
-            );
-            const productFind = await Product.findOne({
-                attributes:['id','createdAt','title', 'price', 'image', ['keyId','user_id']],
-                include: [{
-                    model: User,
-                    attributes: ['id', 'phone', 'name', 'email']}]
-            });
-            return h.response({productFind}).code(200);
-        },
-        options: {
-             auth: {
-                 mode: 'try',
-                 strategy: 'session'
-             }
-        }
-    },
     {   //5. Get item by ID
         method: 'GET',
         path: `/api/items/{id}`,
@@ -134,6 +110,47 @@ module.exports = [
             }
         }
     },
-
+    {   //6. Update item
+        method: 'PUT',
+        path: `/api/items/{id}`,
+        handler: async (request, h) => {
+            const product = await Product.update(
+                {title: request.payload.title,
+                    price: request.payload.price},
+                {where: {id: request.params.id}}
+            );
+            const productFind = await Product.findOne({
+                attributes:['id','createdAt','title', 'price', 'image', ['keyId','user_id']],
+                include: [{
+                    model: User,
+                    attributes: ['id', 'phone', 'name', 'email']}]
+            });
+            return h.response({productFind}).code(200);
+        },
+        options: {
+            auth: {
+                mode: 'try',
+                strategy: 'session'
+            }
+        }
+    },
+    {//7. Delete item
+        method: 'DELETE',
+        path: `/api/items/{id}`,
+        handler: async (request, h) => {
+            const products = await Product.findOne({
+                where: {id: request.params.id}
+            });
+            const product = products[0];
+            await products.destroy();
+            return h.response({product}).code(200);
+        },
+        options: {
+            auth: {
+                mode: 'try',
+                strategy: 'session'
+            }
+        }
+    }
 
 ];
