@@ -21,6 +21,9 @@ const init = async () => {
         },
         {
             plugin: require('./plugins/loadAllRoutes')
+        },
+        {
+            plugin: require('./plugins/requestLifecycle')
         }
     ]);
 

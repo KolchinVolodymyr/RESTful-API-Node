@@ -1,30 +1,14 @@
 'use strict';
-
+const JWT = require('jsonwebtoken');
 
 module.exports = [
-
-    {
-        method: 'GET',
-        path: `/api/2`,
-        handler: async (request, h) => {
-
-            return 'Hello World!222';
-        }
-    },
-    {
-        method: 'GET',
-        path: '/api',
-        handler: (request, h) => {
-
-            return 'Hello World!';
-        }
-    },
-    {
+    {   //3. Get current user
         method: 'GET',
         path: '/api/me',
         handler: async function (request, h) {
             try {
-                return h.response({Authorization: request.headers.cookie}).code(200).takeover();
+                //const decoded = JWT.verify('"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyIiwiaWF0IjoxNjE0NjI4NDc5LCJleHAiOjE2MTQ2MzIwNzl9.L4L-YvLNj1LuP_dKGW5nvSgs2Ep0sD_26ZN0Qgp7nPs"', 'jwtSecret');
+                return h.response({Authorization: request.headers.cookie/*, decoded: decoded*/}).code(200).takeover();
             } catch (e) {
                 console.log(e);
             }
@@ -32,7 +16,7 @@ module.exports = [
         options: {
             auth: {
                 mode: 'try',
-                // strategy: 'session'
+                strategy: 'session'
             }
         }
     }

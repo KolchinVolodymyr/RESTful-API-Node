@@ -23,7 +23,8 @@ module.exports = (sequelize, Sequelize) => {
             required: true
         },
         phone: {
-            type: Sequelize.STRING
+            type: Sequelize.STRING,
+            defaultValue: ''
         }
 
     });

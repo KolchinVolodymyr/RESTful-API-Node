@@ -6,25 +6,16 @@ const Product = db.product;
 const fs = require('fs');
 
 module.exports = [
-    {
-        method: 'POST',
+    {   //4. Get items list
+        method: 'GET',
         path: '/api/items',
         handler: async (request, h) => {
-            console.log('request.auth', request.auth);
-            const itemProduct = await Product.create({
-                title: request.payload.title,
-                price:  request.payload.price,
-                image: request.payload.image,
-                keyId: request.auth.credentials.id
-            },{
-                include: [User]
-            })
-
             const findProduct =  await Product.findAll({
                 attributes:['id','createdAt','title', 'price', 'image', ['keyId','user_id']],
                 include: [{
                     model: User,
-                    attributes: ['id', 'phone', 'name', 'email']}]
+                    attributes: ['id', 'phone', 'name', 'email']
+                }]
             })
             return h.response({Product: findProduct}).code(200);
         },
@@ -40,16 +31,20 @@ module.exports = [
         path: `/api/items/{id}`,
         handler: async (request, h) => {
 
-            const candidate = await Product.findOne({
+            const product = await Product.findOne({
                 where: {
                     id: request.params.id
                 },
                 attributes:['id','createdAt','title', 'price', 'image', ['keyId','user_id']],
                 include: [{
                     model: User,
-                    attributes: ['id', 'phone', 'name', 'email']}]
-            })
-            return  h.response({candidate: candidate}).code(200);
+                    attributes: ['id', 'phone', 'name', 'email']
+                }]
+            });
+            if(product===null) {
+                return h.response({}).code(404);
+            }
+            return  h.response({product: product}).code(200);
         },
         options: {
             auth: {
@@ -62,18 +57,34 @@ module.exports = [
         method: 'PUT',
         path: `/api/items/{id}`,
         handler: async (request, h) => {
-            const product = await Product.update(
-                {title: request.payload.title,
-                    price: request.payload.price},
-                {where: {id: request.params.id}}
+            if(request.payload.title.length<3) {
+                return h.response({field:"title", message:"Title should contain at least 3 characters"}).code(422);
+            }
+            await Product.update({
+                    title: request.payload.title,
+                    price: request.payload.price
+                },
+                {
+                    where: {
+                        id: request.params.id
+                    }
+                }
             );
             const productFind = await Product.findOne({
+                where: {
+                    id: request.params.id
+                },
                 attributes:['id','createdAt','title', 'price', 'image', ['keyId','user_id']],
                 include: [{
                     model: User,
-                    attributes: ['id', 'phone', 'name', 'email']}]
+                    attributes: ['id', 'phone', 'name', 'email']
+                }]
             });
+            if(productFind===null) {
+                return h.response({}).code(404);
+            }
             return h.response({productFind}).code(200);
+
         },
         options: {
             auth: {
@@ -82,16 +93,59 @@ module.exports = [
             }
         }
     },
-    {//7. Delete item
+    {   //7. Delete item
         method: 'DELETE',
         path: `/api/items/{id}`,
         handler: async (request, h) => {
             const products = await Product.findOne({
                 where: {id: request.params.id}
             });
-            const product = products[0];
+
+            if(products===null) {
+                return h.response({}).code(404);
+            }
+
             await products.destroy();
-            return h.response({product}).code(200);
+            return h.response({}).code(200);
+        },
+        options: {
+            auth: {
+                mode: 'try',
+                strategy: 'session'
+            }
+        }
+    },
+    {   //8. Create item
+        method: 'POST',
+        path: '/api/items',
+        handler: async (request, h) => {
+
+            if(!request.payload.title) {
+                return h.response({field:"title", message:"title is required"}).code(422);
+            }
+            if(!request.payload.price) {
+                return h.response({field:"price", message:"price is required"}).code(422);
+            }
+            await Product.create({
+                title: request.payload.title,
+                price:  request.payload.price,
+                image: request.payload.image,
+                keyId: request.auth.credentials.id
+            },{
+                include: [User]
+            })
+
+            const findProduct =  await Product.findAll({
+                where: {
+                    title: request.payload.title
+                },
+                attributes:['id','createdAt','title', 'price', 'image', ['keyId','user_id']],
+                include: [{
+                    model: User,
+                    attributes: ['id', 'phone', 'name', 'email']
+                }]
+            })
+            return h.response({Product: findProduct}).code(200);
         },
         options: {
             auth: {
