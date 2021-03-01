@@ -12,7 +12,7 @@ exports.plugin = {
                 password: '!wsYhFA*C2U6nz=Bu^%A@^F#SF3&kSR6',
                 isSecure: false
             },
-            redirectTo: '/login',
+            redirectTo: '/api/login',
             validateFunc: async (request, session) => {
 
                 // const account = await users.find(

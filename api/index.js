@@ -2,9 +2,7 @@
 
 const Hapi = require('@hapi/hapi');
 const sequelize = require('./utils/database')
-
-
-
+const db = require('./utils/database');
 
 const init = async () => {
 
@@ -29,7 +27,10 @@ const init = async () => {
 
 
     await server.start();
-    await sequelize.sync();
+    //await sequelize.sync();
+    db.sequelize.sync().then(() => {
+        console.log('Drop and Resync with { force: true }');
+    });
     console.log('Server running on %s', server.info.uri);
 };
 

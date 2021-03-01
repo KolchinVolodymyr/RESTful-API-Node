@@ -1,32 +1,22 @@
 module.exports = (sequelize, Sequelize) => {
-    const User = sequelize.define('user', {
-        id: {
-            type: Sequelize.INTEGER,
-            allowNull: false,
-            primaryKey: true,
-            autoIncrement: true,
-            required: true
-        },
-        name: {
+    const Product = sequelize.define('product', {
+        title: {
             type: Sequelize.STRING,
             allowNull: false,
             required: true
         },
-        email: {
+        price: {
             type: Sequelize.STRING,
             allowNull: false,
             required: true
         },
-        password: {
+        image: {
             type: Sequelize.STRING,
             allowNull: false,
             required: true
         },
-        phone: {
-            type: Sequelize.STRING
-        }
 
     });
 
-    return User;
+    return Product;
 }
