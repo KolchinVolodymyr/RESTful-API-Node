@@ -8,7 +8,7 @@ exports.plugin = {
             type: 'onRequest',
             method: async function (request, h) {
                 try {
-                    console.log("ok");
+
                     const cookie = request.headers.cookie || '',
                         token = cookie.split(/;+/).filter((str)=>{
                             return str.indexOf('sid-example') ===0

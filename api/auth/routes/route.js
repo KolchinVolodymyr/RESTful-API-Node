@@ -32,7 +32,7 @@ module.exports = [
                         { userId: candidate.name },
                         'jwtSecret',
                         { expiresIn: '1h' });
-                    console.log('request.headers.autorization', request.headers)
+
                     return h.response({token: token}).code(200);
                 } else {
                     return h.response({field :"password", message :"Wrong email or password"}).code(422);

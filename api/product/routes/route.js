@@ -57,6 +57,12 @@ module.exports = [
         method: 'PUT',
         path: `/api/items/{id}`,
         handler: async (request, h) => {
+            if(!request.auth.credentials) {
+                return h.response({}).code(401)
+            }
+            console.log('credentials', request.auth.credentials);
+
+
             if(request.payload.title.length<3) {
                 return h.response({field:"title", message:"Title should contain at least 3 characters"}).code(422);
             }
@@ -80,6 +86,10 @@ module.exports = [
                     attributes: ['id', 'phone', 'name', 'email']
                 }]
             });
+
+            if(request.auth.credentials.id!==productFind.dataValues.user_id) {
+                return h.response({}).code(403)
+            }
             if(productFind===null) {
                 return h.response({}).code(404);
             }
@@ -97,14 +107,23 @@ module.exports = [
         method: 'DELETE',
         path: `/api/items/{id}`,
         handler: async (request, h) => {
+            if(!request.auth.credentials) {
+                return h.response({}).code(401)
+            }
+
             const products = await Product.findOne({
-                where: {id: request.params.id}
+                where: {
+                    id: request.params.id
+                }
             });
 
             if(products===null) {
                 return h.response({}).code(404);
             }
 
+            if(request.auth.credentials.id!==products.dataValues.keyId) {
+                return h.response({}).code(403)
+            }
             await products.destroy();
             return h.response({}).code(200);
         },
@@ -119,7 +138,9 @@ module.exports = [
         method: 'POST',
         path: '/api/items',
         handler: async (request, h) => {
-
+            if(!request.auth.credentials) {
+                return h.response({}).code(401)
+            }
             if(!request.payload.title) {
                 return h.response({field:"title", message:"title is required"}).code(422);
             }
@@ -158,6 +179,9 @@ module.exports = [
         method: 'POST',
         path: `/api/items/{id}/images`,
         handler: async (request, h) => {
+            if(!request.auth.credentials) {
+                return h.response({}).code(401)
+            }
             const handleFileUpload = file => {
                 return new Promise((resolve, reject) => {
 

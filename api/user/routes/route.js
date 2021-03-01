@@ -2,13 +2,33 @@
 const JWT = require('jsonwebtoken');
 
 module.exports = [
+    {
+        method: 'POST',
+        path: `/api/logout`,
+        options: {
+            auth: {
+                mode: 'try',
+                strategy: 'session'
+            }
+        },
+        handler: async function (request, h) {
+            try {
+                request.cookieAuth.clear();
+                return h.response({message: 'Сookies deleted'}).code(200).takeover();
+            } catch (e){
+                console.log(e);
+            }
+        }
+    },
     {   //3. Get current user
         method: 'GET',
         path: '/api/me',
         handler: async function (request, h) {
             try {
-                //const decoded = JWT.verify('"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyIiwiaWF0IjoxNjE0NjI4NDc5LCJleHAiOjE2MTQ2MzIwNzl9.L4L-YvLNj1LuP_dKGW5nvSgs2Ep0sD_26ZN0Qgp7nPs"', 'jwtSecret');
-                return h.response({Authorization: request.headers.cookie/*, decoded: decoded*/}).code(200).takeover();
+                if(!request.auth.credentials) {
+                    return h.response({}).code(401)
+                }
+                return h.response(request.auth.credentials).code(200).takeover();
             } catch (e) {
                 console.log(e);
             }
