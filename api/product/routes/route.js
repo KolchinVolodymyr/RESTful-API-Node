@@ -3,6 +3,8 @@ const product = require('../../model/product');
 const db = require('../../utils/database');
 const User = db.user;
 const Product = db.product;
+const fs = require('fs');
+const util = require("util");
 
 module.exports = [
     // {
@@ -151,6 +153,51 @@ module.exports = [
                 strategy: 'session'
             }
         }
+    },
+    {   //9. Upload item image
+        method: 'POST',
+        path: `/api/items/{id}/images`,
+        handler: async (request, h) => {
+            const handleFileUpload = file => {
+                return new Promise((resolve, reject) => {
+
+                    const filename = request.payload.file.hapi.filename;
+                    const data = file._data;
+
+                    fs.writeFile('./api/public/upload/' + filename, data, err => {
+                        if (err) {
+                            reject(err);
+                        }
+                        resolve({ message: 'Upload successfully!' });
+                    });
+                });
+            };
+            const { payload } = request;
+            const response = handleFileUpload(payload.file);
+
+            const products = await Product.update({
+                    image: '/public/upload/' + request.payload.file.hapi.filename
+                },
+                {where: {id: request.params.id}}
+            );
+
+            return h.response(request.payload);
+
+        },
+        options: {
+            auth: {
+                mode: 'try',
+                strategy: 'session'
+            },
+            payload: {
+                maxBytes: 10485760,
+                parse: true,
+                output: 'stream',
+                allow: ['multipart/form-data'],
+                multipart: true
+            }
+        }
+
     }
 
 ];
