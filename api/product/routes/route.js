@@ -1,65 +1,11 @@
 'use strict';
-const product = require('../../model/product');
+
 const db = require('../../utils/database');
 const User = db.user;
 const Product = db.product;
 const fs = require('fs');
-const util = require("util");
 
 module.exports = [
-    // {
-    //     method: 'GET',
-    //     path: '/api/item/{id}',
-    //     handler: function (request, h) {
-    //
-    //         return ` <html>
-    //                         <head>
-    //                             <title>Update Product</title>
-    //                         </head>
-    //                         <body>
-    //                             <h3>Update Product</h3>
-    //                             <form method="post" action="/api/items/3">
-    //                                 <input type="hidden" name="id" value="3">
-    //                                 title: <input type="text"  name="title"><br>
-    //                                 price: <input type="text" name="price"><br/>
-    //                                 image: <input type="text" name="image"><br/>
-    //                             <input type="submit" value="qwerrrr"></form>
-    //                         </body>
-    //                     </html>`;
-    //     },
-    //     options: {
-    //         auth: {
-    //             mode: 'try',
-    //             strategy: 'session'
-    //         }
-    //     }
-    // },
-    {
-        method: 'GET',
-        path: '/api/items',
-        handler: function (request, h) {
-
-            return ` <html>
-                            <head>
-                                <title>Product</title>
-                            </head>
-                            <body>
-                                <h3>Please Log In</h3>
-                                <form method="post" action="/api/items">
-                                    title: <input type="text"  name="title"><br>
-                                    price: <input type="text" name="price"><br/>
-                                    image: <input type="text" name="image"><br/>
-                                <input type="submit" value="Login"></form>
-                            </body>
-                        </html>`;
-        },
-        options: {
-            auth: {
-                mode: 'try',
-                strategy: 'session'
-            }
-        }
-    },
     {
         method: 'POST',
         path: '/api/items',
