@@ -60,5 +60,35 @@ module.exports = [
             }
         }
     },
+    {   //5. Get item by ID
+        method: 'GET',
+        path: `/api/items/{id}`,
+        handler: async (request, h) => {
+
+            const candidate = await Product.findOne({
+                where: {
+                    id: request.params.id
+                },
+                attributes:['id','createdAt','title', 'price', 'image', ['keyId','user_id']],
+                include: [{
+                    model: User,
+                    attributes: ['id', 'phone', 'name', 'email']}]
+            })
+            return  h.response({candidate: candidate}).code(200);
+        },
+        options: {
+            auth: {
+                mode: 'try',
+                strategy: 'session'
+            }
+        }
+    },
+    // {//6. Update item
+    //     method: 'GET',
+    //     path: `/api/items/{id}`,
+    //     handler: async (request, h) => {
+    //
+    //     }
+    // }
 
 ];
