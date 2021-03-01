@@ -5,6 +5,33 @@ const User = db.user;
 const Product = db.product;
 
 module.exports = [
+    // {
+    //     method: 'GET',
+    //     path: '/api/item/{id}',
+    //     handler: function (request, h) {
+    //
+    //         return ` <html>
+    //                         <head>
+    //                             <title>Update Product</title>
+    //                         </head>
+    //                         <body>
+    //                             <h3>Update Product</h3>
+    //                             <form method="post" action="/api/items/3">
+    //                                 <input type="hidden" name="id" value="3">
+    //                                 title: <input type="text"  name="title"><br>
+    //                                 price: <input type="text" name="price"><br/>
+    //                                 image: <input type="text" name="image"><br/>
+    //                             <input type="submit" value="qwerrrr"></form>
+    //                         </body>
+    //                     </html>`;
+    //     },
+    //     options: {
+    //         auth: {
+    //             mode: 'try',
+    //             strategy: 'session'
+    //         }
+    //     }
+    // },
     {
         method: 'GET',
         path: '/api/items',
@@ -60,6 +87,24 @@ module.exports = [
             }
         }
     },
+    {   //6. Update item
+        method: 'PUT',
+        path: `/api/items/{id}`,
+        handler: async (request, h) => {
+            const product = await Product.update(
+                {title: request.payload.title,
+                    price: request.payload.price},
+                {where: {id: request.params.id}}
+            )
+            return  h.response({Product: product}).code(200);
+        },
+        options: {
+             auth: {
+                 mode: 'try',
+                 strategy: 'session'
+             }
+        }
+    },
     {   //5. Get item by ID
         method: 'GET',
         path: `/api/items/{id}`,
@@ -83,12 +128,6 @@ module.exports = [
             }
         }
     },
-    // {//6. Update item
-    //     method: 'GET',
-    //     path: `/api/items/{id}`,
-    //     handler: async (request, h) => {
-    //
-    //     }
-    // }
+
 
 ];
