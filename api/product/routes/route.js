@@ -95,8 +95,14 @@ module.exports = [
                 {title: request.payload.title,
                     price: request.payload.price},
                 {where: {id: request.params.id}}
-            )
-            return  h.response({Product: product}).code(200);
+            );
+            const productFind = await Product.findOne({
+                attributes:['id','createdAt','title', 'price', 'image', ['keyId','user_id']],
+                include: [{
+                    model: User,
+                    attributes: ['id', 'phone', 'name', 'email']}]
+            });
+            return h.response({productFind}).code(200);
         },
         options: {
              auth: {
