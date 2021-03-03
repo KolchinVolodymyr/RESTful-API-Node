@@ -1,7 +1,6 @@
 'use strict';
 
 const Hapi = require('@hapi/hapi');
-const sequelize = require('./utils/database')
 const db = require('./utils/database');
 
 const init = async () => {
@@ -21,24 +20,17 @@ const init = async () => {
         },
         {
             plugin: require('./plugins/loadAllRoutes')
-        },
-        {
-            plugin: require('./plugins/requestLifecycle')
         }
     ]);
 
-
-
     await server.start();
-    //await sequelize.sync();
     db.sequelize.sync().then(() => {
-        console.log('Drop and Resync with { force: true }');
+        console.log('sequelize.sync()');
     });
     console.log('Server running on %s', server.info.uri);
 };
 
 process.on('unhandledRejection', (err) => {
-
     console.log(err);
     process.exit(1);
 });
