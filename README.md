@@ -12,4 +12,13 @@ DELETE − This is used to remove a resource.
 
 POST − This is used to update a existing resource or create a new resource.
 
-RESTful Web Services
+### Main functionality: 
+-	Check in
+- Authorization
+- Getting the data of the current user
+- Creation / deletion of goods by an authorized user
+- Changing product data by an authorized user
+- Uploading product image 
+
+
+Based on this information we are going to provide following RESTful APIs.
