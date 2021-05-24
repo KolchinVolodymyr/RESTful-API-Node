@@ -22,3 +22,14 @@ POST − This is used to update a existing resource or create a new resource.
 
 
 Based on this information we are going to provide following RESTful APIs.
+
+
+| №      | URI             | HTTP Method |  Request                                                 |  Responses                               |          Result          |
+| :----- |:---------------:| :----------:| :-----------------------------------------------------:  | :--------------------------------------: |:------------------------:|
+| 1      | /api/login      |  POST       | Body: {"email": "email@gmail.com", "password": "qwerty"} | Status code: 200, {"token": "3f5uh2...."}| Add details of new user. |
+| 2      |          |   |
+| 3      |     |    |
+| 4      |       |    |
+
+
+
