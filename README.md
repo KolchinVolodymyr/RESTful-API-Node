@@ -38,4 +38,24 @@ Based on this information we are going to provide following RESTful APIs.
 
 
 
+### Examples endpoints: 
+  Below are examples of endpoints, server requests, and returned models.
+MySQL was used as a database 
 
+  
+####  1.	Login user 
+  
+  #### Request:
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
